@@ -1,0 +1,21 @@
+.contextListContacts {
+  width: 450px;
+  border: 1px solid;
+  padding: 10px;
+  margin-left: 100px;
+}
+
+.listContacts {
+  display: flex;
+  text-align: center;
+  border: 1px solid;
+  height: 40px;
+  align-items: center;
+}
+.headerList {
+  text-transform: uppercase;
+}
+.list,
+.headerList {
+  width: 150px;
+}
