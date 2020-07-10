@@ -3,6 +3,9 @@ import shortid from 'shortid';
 import AddContact from './AddContact';
 import ContactList from './ContactList';
 import Filter from './Filter';
+import Modal from './Modal';
+
+import { saveToLS, getFromLS } from '../services/helper';
 
 import '../../node_modules/modern-normalize/modern-normalize.css';
 
@@ -15,15 +18,12 @@ export default class App extends Component {
       { id: 'id-4', name: 'Annie Copeland', number: '227-91-26' },
     ],
     filter: '',
+    message: '',
+    showModal: false,
   };
 
   componentDidMount() {
-    const contacts = localStorage.getItem('contacts');
-    const parsedContacts = JSON.parse(contacts);
-
-    if (parsedContacts) {
-      this.setState({ contacts: parsedContacts });
-    }
+    this.setState({ contacts: getFromLS('contacts') });
   }
 
   componentDidUpdate(prevProps, prevState) {
@@ -31,7 +31,7 @@ export default class App extends Component {
     const prevContacts = prevState.contacts;
 
     if (nextContacts !== prevContacts) {
-      localStorage.setItem('contacts', JSON.stringify(nextContacts));
+      saveToLS('contacts', nextContacts);
     }
   }
 
@@ -42,11 +42,13 @@ export default class App extends Component {
     const checkedName = contacts.find(contact => name === contact.name);
 
     if (checkedName) {
-      return alert(`${name} is already in contacts`);
+      this.closeModal();
+      return this.setState({ message: `${name} is already in contacts` });
     }
 
     if (!name || !number) {
-      return alert(`Fill in all the fields`);
+      this.closeModal();
+      return this.setState({ message: `Fill in all the fields` });
     }
 
     this.setState(state => ({ contacts: state.contacts.concat(contact) }));
@@ -65,12 +67,22 @@ export default class App extends Component {
     }));
   };
 
+  closeModal = () => {
+    this.setState(({ showModal }) => ({
+      showModal: !showModal,
+    }));
+  };
+
   render() {
-    const { contacts, filter } = this.state;
+    const { contacts, filter, message, showModal } = this.state;
     const filterView = this.filterReturn();
 
     return (
       <>
+        {message !== '' && showModal ? (
+          <Modal onClose={this.closeModal}>{message}</Modal>
+        ) : null}
+
         <h1>Phonebook</h1>
         <AddContact saveContact={this.saveContact} />
         <h2>Contact</h2>
