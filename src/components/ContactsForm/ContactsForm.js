@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
 import propTypes from 'prop-types';
 
-import './AddContact.css';
+import './ContactsForm.css';
 
-export default class AddContact extends Component {
+export default class ContactsForm extends Component {
   static defaultProps = {};
 
   static propTypes = {

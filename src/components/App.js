@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import shortid from 'shortid';
-import AddContact from './AddContact';
+import ContactsForm from './ContactsForm';
 import ContactList from './ContactList';
 import Filter from './Filter';
 import Modal from './Modal';
@@ -57,8 +57,12 @@ export default class App extends Component {
     this.setState({ filter: event.target.value });
   };
   filterReturn() {
-    return this.state.contacts.filter(contact =>
-      contact.name.toLowerCase().includes(this.state.filter.toLowerCase()),
+    const { contacts } = this.state;
+    return (
+      contacts &&
+      contacts.filter(contact =>
+        contact.name.toLowerCase().includes(this.state.filter.toLowerCase()),
+      )
     );
   }
   removeContact = id => {
@@ -84,7 +88,7 @@ export default class App extends Component {
         ) : null}
 
         <h1>Phonebook</h1>
-        <AddContact saveContact={this.saveContact} />
+        <ContactsForm saveContact={this.saveContact} />
         <h2>Contact</h2>
         {contacts.length >= 2 && (
           <Filter filter={filter} handleFilter={this.handleFilter} />
