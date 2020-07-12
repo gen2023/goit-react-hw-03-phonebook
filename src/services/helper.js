@@ -8,7 +8,7 @@ export const saveToLS = (key, value) => {
 export const getFromLS = key => {
   try {
     const items = localStorage.getItem(key);
-    return items ? JSON.parse(items) : null;
+    return items ? JSON.parse(items) : [];
   } catch (error) {
     throw new Error();
   }
